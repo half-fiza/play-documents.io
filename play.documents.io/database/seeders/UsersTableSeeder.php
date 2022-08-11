@@ -21,12 +21,9 @@ class UsersTableSeeder extends Seeder
             $data = [
                 'name' => 'Admin',
                 'email' => 'admin@admin.com',
-                'password' => Hash::make('coldcold'),
-                'is_local_user' => 1
+                'password' => Hash::make('coldcold')
             ];
             $user = User::create($data);
-
-            $user->assignRole('administrator');
 
             echo 'User created successfully!';
         } else {
