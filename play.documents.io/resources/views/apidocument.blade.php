@@ -5,6 +5,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
     <title>Replace Api documents</title>
     <style>
         .container {
@@ -41,27 +45,37 @@
             </div>
             @endif
 
+
             <div class='text-md-center'>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="toolsName" id="1" value="hubble" selected>
-                <label class="form-check-label" for="1">Hubble</label>
+               
+                @if(isset($returnToolList))
+                    @foreach($returnToolList as $returnToolListKey => $returnToolListValue)
+                        <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="toolsName" id={{$returnToolListKey}} value={{$returnToolListValue}}>
+                        <label class="form-check-label" for={{$returnToolListKey}}>{{$returnToolListValue}}</label>
+                      </div>
+                 
+                @endforeach
+                @endif
             </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="toolsName" id="2" value="lumeire">
-                <label class="form-check-label" for="2">Lumeire</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="toolsName" id="3" value="clg" >
-                <label class="form-check-label" for="3">CLG</label>
-            </div>
-            </div>
+  
             <div style='margin-top:30px;' class="custom-file">
                 <input type="file" name="file" class="custom-file-input" id="chooseFile">
                 <label class="custom-file-label" for="chooseFile">Select file</label>
+
+                
+            </div> 
+            <div class="mb-3">
+        
+
             </div>
-            <button type="submit" name="submit" class="btn btn-primary btn-block mt-4">
+            <button type="submit" name="submit" id='btnUpload' class="btn btn-primary btn-block mt-4">
                 Upload Files
             </button>
+
+        
+            
+
         </form>
     </div>
 
@@ -96,4 +110,11 @@
     </div>
 </body>
 
+<script>
+
+$(".custom-file-input").on("change", function() {
+  var fileName = $(this).val().split("\\").pop();
+  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+});
+</script>
 </html>

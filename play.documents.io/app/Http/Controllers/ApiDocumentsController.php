@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\FileDetails;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ApiDocumentsController extends Controller
 {
@@ -14,33 +15,37 @@ class ApiDocumentsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public $fileApiDetailsView;
+    public $fileApiDetailsView, $toolListToDisplay;
     public function index()
     {
+        // To fill the tool available for documents.
+         $this->getToolsList();
+         $returnToolList = $this->toolListToDisplay;
+
+        // To get the file view in table format.
         $this->fileView();
         $returnArray = $this->fileApiDetailsView ;
-       // dd($returnArray);
-        return view('apidocument', compact('returnArray'));
+      
+
+        return view('apidocument', compact('returnArray','returnToolList'));
     }
 
  
     public function fileUpload(Request $req){
          
         
-        
+       
         //$file->move("api-documents/".$req->toolsName, $filename);
-        $toolTable = DB::table('tools')->where('name', $req->toolsName)->first();
+        $toolTable = DB::table('tools')->where('name', strtolower($req->toolsName))->first();
        
         $req->validate([
-        'file' => 'required|mimes:html, docx|max:2048'
+        'file' => 'required|mimes:html|max:2048',
+        'toolsName' => 'required'
         ]);
         $fileModel = new FileDetails;
         if($req->file()) {
             $fileName =   $req->file->getClientOriginalName();
-            //$FileObject = $req->file('file');
-           // $FileObject->move("api-documents/".$req->toolsName, $fileName);
-             $filePath = $req->file('file')->storeAs("api-documents/".$req->toolsName, $fileName);
-            // $fileModel->name = time().'_'.$req->file->getClientOriginalName();
+            $filePath = $req->file('file')->storeAs("api-documents/".$req->toolsName, $fileName);
              $fileModel->file_path = 'storage/app/'.$filePath;
              $fileModel->tool_id = $toolTable->id;
              $fileModel->is_deleted = 0;
@@ -74,6 +79,18 @@ class ApiDocumentsController extends Controller
             }
         }  
    
+   }
+
+   public function getToolsList(){
+  
+        $getToolsList = DB::table('tools')->get();
+        
+        if(!empty($getToolsList)){
+            foreach($getToolsList as $val){
+                $this->toolListToDisplay[$val->id] =  ucfirst($val->name);
+            }
+        }
+        
    }
 
     /**
