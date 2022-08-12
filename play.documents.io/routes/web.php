@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ApiDocumentsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+ 
+Route::get('/api-documents-upload', [ApiDocumentsController::class, 'index']);
+Route::post('/upload-file', [ApiDocumentsController::class, 'fileUpload'])->name('fileUpload');
+Route::get('/upload-file', [ApiDocumentsController::class, 'index']);
+

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class FileDetails extends Model
 {
     use HasFactory;
-    protected $table = 'file_details';
+    protected $table = 'api_file_details';
     /**
      * The attributes that are mass assignable.
      *
@@ -16,8 +16,7 @@ class FileDetails extends Model
      */
     protected $fillable = [
         'tool_id',
-        'api_document_path',
-        'updated_by',
+        'file_path',
         'is_deleted',
 
     ];
