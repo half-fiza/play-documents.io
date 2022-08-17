@@ -19,6 +19,7 @@ class ApiDocumentsController extends Controller
     public $fileApiDetailsView, $toolListToDisplay;
     public function index()
     { 
+        //return view('apidocuments');
         // To fill the tool available for documents.
          $this->getToolsList();
          $returnToolList = $this->toolListToDisplay;
@@ -34,7 +35,7 @@ class ApiDocumentsController extends Controller
  
     public function fileUpload(Request $req){
          
-       
+
         //$file->move("api-documents/".$req->toolsName, $filename);
         $toolTable = DB::table('tools')->where('name', strtolower($req->toolsName))->first();
        
@@ -67,15 +68,18 @@ class ApiDocumentsController extends Controller
         
         $apiFileDetailsDB = DB::table('api_file_details')
         ->join('tools', 'tools.id', '=', 'api_file_details.tool_id')
-        ->select('api_file_details.*', 'tools.name as toolName')
+        ->join('users', 'users.id' , '=', 'api_file_details.user_id' )
+        ->select('api_file_details.*', 'tools.name as toolName','users.name as userName')
         ->get();
        
+         
         if(!empty($apiFileDetailsDB)){
             foreach($apiFileDetailsDB as $key=>$value){
              $this->fileApiDetailsView[$value->tool_id]['tool_id'] = $value->tool_id;
              $this->fileApiDetailsView[$value->tool_id]['tool_name'] = $value->toolName;
              $this->fileApiDetailsView[$value->tool_id]['file_path'] = $value->file_path;
              $this->fileApiDetailsView[$value->tool_id]['is_deleted'] = $value->is_deleted;
+             $this->fileApiDetailsView[$value->tool_id]['user_name'] = $value->userName;
              $this->fileApiDetailsView[$value->tool_id]['updated_at'] = $value->updated_at;
             }
         }  
