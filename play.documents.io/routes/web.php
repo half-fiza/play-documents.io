@@ -18,7 +18,13 @@ Route::get('/', function () {
     return view('welcome');
 });
  
+
 Route::get('/api-documents-upload', [ApiDocumentsController::class, 'index']);
 Route::post('/upload-file', [ApiDocumentsController::class, 'fileUpload'])->name('fileUpload');
 Route::get('/upload-file', [ApiDocumentsController::class, 'index']);
+
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\FileDetails;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class ApiDocumentsController extends Controller
 {
@@ -17,7 +18,7 @@ class ApiDocumentsController extends Controller
 
     public $fileApiDetailsView, $toolListToDisplay;
     public function index()
-    {
+    { 
         // To fill the tool available for documents.
          $this->getToolsList();
          $returnToolList = $this->toolListToDisplay;
@@ -33,7 +34,6 @@ class ApiDocumentsController extends Controller
  
     public function fileUpload(Request $req){
          
-        
        
         //$file->move("api-documents/".$req->toolsName, $filename);
         $toolTable = DB::table('tools')->where('name', strtolower($req->toolsName))->first();
@@ -50,6 +50,7 @@ class ApiDocumentsController extends Controller
              $fileModel->tool_id = $toolTable->id;
              $fileModel->is_deleted = 0;
              $fileModel->updated_at = time();
+             $fileModel->user_id =Auth::id();
              $fileModel->save();
              return back()
             ->with('success','File has been uploaded.')

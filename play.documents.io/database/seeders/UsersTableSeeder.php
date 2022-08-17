@@ -29,5 +29,36 @@ class UsersTableSeeder extends Seeder
         } else {
             echo 'User already exists!';
         }
+
+
+
+        $memberOne = User::where('email', '=', 'kunal.sawhney@cactusglobal.com')->first();
+        if (! $memberOne) {
+            $dataMemberOne = [
+                'name' => 'KunalS',
+                'email' => 'kunal.sawhney@cactusglobal.com',
+                'password' => Hash::make('kunal@sawhney')
+            ];
+            $userMemberOne = User::create($dataMemberOne);
+
+            echo 'MemberOne created successfully!';
+        } else {
+            echo 'MemberOne already exists!';
+        }
+
+        $memberTwo = User::where('email', '=', 'krisha.mishra@cactusglobal.com')->first();
+        if (! $memberTwo) {
+            $dataMemberTwo= [
+                'name' => 'KrishnaM',
+                'email' => 'krishna.mishra@cactusglobal.com',
+                'password' => Hash::make('krishna@mishra')
+            ];
+            $userMemberTwo = User::create($dataMemberTwo);
+
+            echo 'MemberTwo created successfully!';
+        } else {
+            echo 'MemberTwo already exists!';
+        }
+
     }
 }

@@ -18,6 +18,7 @@ class FileDetails extends Model
         'tool_id',
         'file_path',
         'is_deleted',
+        'user_id'
 
     ];
 }
